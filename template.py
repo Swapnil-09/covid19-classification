@@ -4,7 +4,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-project_name="covid19-classification"
+project_name="covid19_classification"
 
 list_of_file=[
     ".github/workflows/.gitkeep",
