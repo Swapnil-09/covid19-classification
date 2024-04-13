@@ -2,7 +2,7 @@ import os
 import sys 
 import pandas as pd
 import numpy as np 
-from sklearn.preprocessing import OneHotEncoder
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
 from sklearn.pipeline import Pipeline
@@ -26,15 +26,15 @@ class DataTranformation:
 
     def get_data_transformer_object(self):
 
-
         try:
+
             cols = ['Cough_symptoms', 'Fever', 'Sore_throat', 'Shortness_of_breath','Headache', 'Age_60_above', 'Sex', 'Known_contact']
 
             cat_pipeline = Pipeline(steps=[
-                ("imputer", SimpleImputer(strategy="most_frequent")),
-                ("one_hot_encoder", OneHotEncoder())
-                ]
-            )
+                ("imputer", SimpleImputer(strategy="most_frequent")), 
+                ("one_hot_encoder", OneHotEncoder(sparse_output=False, drop='first'))
+                #("standard_Scaler", StandardScaler(with_mean=False))
+                ])
 
             preprocessor = ColumnTransformer([
                 ("cat_pipeline", cat_pipeline, cols)]
@@ -63,7 +63,7 @@ class DataTranformation:
             target_col_name="Corona"
             #mapping the target feature values for train and test df
             train_df[target_col_name] = train_df[target_col_name].map({'negative' : 0, 'positive' : 1})
-            test_df[target_col_name] = train_df[target_col_name].map({'negative' : 0, 'positive' : 1})
+            test_df[target_col_name] = test_df[target_col_name].map({'negative' : 0, 'positive' : 1})
 
             #dividing the train dataset in independent and target features
             input_features_train_df=train_df.drop(columns=[target_col_name], axis=1)
